@@ -13,7 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
+                    @yield('404')
                     You are logged in!
                 </div>
             </div>

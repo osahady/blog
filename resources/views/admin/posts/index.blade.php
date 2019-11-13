@@ -22,12 +22,12 @@
                 @foreach ($posts as $post)
                     <tr>
                         <th scope="row">{{ $post->id }}</th>
-                        <td><img src="{{ $post->photo ? $post->photo->file : 'images/icon-pad.png' }}" alt="no picture" height="50px"></td>
-                        <td>{{ $post->user->name }}</td>
-                        <td>{{ $post->category_id }}</td>
+                        <td><a href="{{ route('posts.edit', $post->id) }}"> <img src="{{ $post->photo ? $post->photo->file : 'images/icon-pad.png' }}" alt="no picture" height="50px"></a></td>
+                        <td><a href="{{ route('posts.edit', $post->id) }}">{{ $post->user->name }}</a></td>
+                        <td>{{ $post->category ? $post->category->name : 'Uncategorized' }}</td>
                        
                         <td>{{ $post->title }}</td>
-                        <td>{{ $post->body }}</td>
+                        <td>{{ Str::limit($post->body, 10) }}</td>
                         <td>{{ $post->created_at->diffForhumans() }}</td>
                         <td>{{ $post->updated_at->diffForhumans() }}</td>
 

@@ -109,7 +109,7 @@ class AdminUsersController extends Controller
         }
         else{
             $input = $request->all();
-            // $input['password'] = bcrypt($request->password);
+            $input['password'] = bcrypt($request->password);
         }
         $user = User::findOrFail($id);
        
@@ -140,7 +140,7 @@ class AdminUsersController extends Controller
     {
         //
         $user = User::findOrFail($id);
-        unlink(public_path(). $user->photo->file);
+        if($user->photo) {unlink(public_path(). $user->photo->file);}
         $user->delete();
         Session::flash('deleted_user', 'The user has been deleted');
         return redirect(route('users.index'));

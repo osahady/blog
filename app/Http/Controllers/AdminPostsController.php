@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\User;
 use App\Photo;
+use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\PostsCreateRequest;
@@ -30,7 +32,9 @@ class AdminPostsController extends Controller
     public function create()
     {
         //
-        return view('admin.posts.create');
+        $categories = Category::pluck('name', 'id');
+        
+        return view('admin.posts.create', compact('categories'));
     }
 
     /**
@@ -79,7 +83,9 @@ class AdminPostsController extends Controller
     public function edit($id)
     {
         //
-        return view('admin.posts.edit');
+        $post = Post::findOrFail($id);
+        $categories = Category::pluck('name', 'id');
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -91,7 +97,28 @@ class AdminPostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //للتجريب وعرض ما تم تحديثه
+        // $post = Post::findOrFail($id);
+        // return [$request->all(), $post];
+
+        $input = $request->all();
+        // $post = Post::findOrFail($id);
+        // $user = User::findOrFail($post->user_id);
+        // if (!$user->isAdmin()) {
+        //     $user = User::auth();
+        // }
+        $user = Auth::user();// get the logged in user
+        //عند ترفيع الصورة يتم تفعيل هذا الشرط
+        if($file = $request->file('photo_id')){
+            $name = time(). $file->getClientOriginalName();
+            $file->move('images', $name);
+
+            $photo = Photo::create(['file' => $name]);
+            $input['photo_id'] = $photo->id;
+        }
+        $user->posts()->whereId($id)->first()->update($input);
+        return redirect(route('posts.index'));
+
     }
 
     /**
@@ -103,5 +130,9 @@ class AdminPostsController extends Controller
     public function destroy($id)
     {
         //
+       $post = Post::findOrFail($id);
+       unlink(public_path() . $post->photo->file);
+       $post->delete();
+       return redirect(route('posts.index'));
     }
 }

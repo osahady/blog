@@ -20,21 +20,24 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/admin', function(){
-    return view('admin.index');
-});
+Route::get('/post/{id}', 'AdminPostsController@post')->name('home.post');
 
 Route::get('/store', 'AdminUsersController@store');
 
 Route::group(['middleware'=> 'admin'], function(){
+    Route::get('/admin', function(){
+        return view('admin.index');
+    });
     Route::resource('admin/users', 'AdminUsersController');
     Route::resource('admin/posts', 'AdminPostsController');
     Route::resource('admin/categories', 'AdminCategoriesController');
     Route::resource('admin/media', 'AdminMediaController');
-    Route::get('admin/media/upload', 'AdminMediaController@store')->name('media.upload');
-    
+    // Route::get('admin/media/upload', 'AdminMediaController@store')->name('media.upload');
+    Route::resource('admin/comments', 'PostCommentController');
+    Route::resource('admin/comment/replies', 'CommentRepliesController');
 });
 
 

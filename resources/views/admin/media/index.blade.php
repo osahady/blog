@@ -20,6 +20,13 @@
                         <td><img src="{{ $photo->file }}" alt="" width="100"></td>
                         <td>{{ $photo->created_at ? $photo->created_at->diffForHumans() : 'no date'}}</td>
                         <td>{{ $photo->updated_at ? $photo->updated_at->diffForHumans() : 'no date'}}</td>
+                        <td>
+                          <form action="{{ route('media.destroy', $photo->id) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                          </form>
+                        </td>
                     </tr> 
                 @endforeach
               

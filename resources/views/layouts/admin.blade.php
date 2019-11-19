@@ -25,7 +25,7 @@
     <![endif]-->
 
 
-
+    @yield('styles') 
 
 </head>
 
@@ -185,6 +185,10 @@
                                 <li>
                                     <a href="{{ route('posts.create') }}">Create Post</a>
                                 </li>
+
+                                <li>
+                                    <a href="{{ route('comments.index') }}">All Comments</a>
+                                </li>
     
                             </ul>
                             <!-- /.nav-second-level -->
@@ -215,18 +219,14 @@
                                 </li>
     
                                 <li>
-                                    <a href="{{ route('media.upload') }}">Upload Media</a>
+                                    <a href="{{ route('media.create') }}">Upload Media</a>
                                 </li>
     
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-    
-    
-    
-    
-    
-    
+
+
     
                         <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
@@ -345,7 +345,7 @@
 <script src="{{asset('js/libs.js')}}"></script>
 
 
-@yield('footer')
+@yield('scripts')
 
 
 

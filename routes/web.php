@@ -14,26 +14,24 @@ use App\Http\Controllers\AdminUsersController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
 
 Auth::routes();
 
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/post/{id}', 'AdminPostsController@post')->name('home.post');
+Route::get('/post/{id}', 'HomeController@post')->name('home.post');
 
 Route::get('/store', 'AdminUsersController@store');
 
 Route::group(['middleware'=> 'admin'], function(){
-    Route::get('/admin', function(){
-        return view('admin.index');
-    });
+    Route::get('/admin', 'AdminController@index');
+
     Route::resource('admin/users', 'AdminUsersController');
     Route::resource('admin/posts', 'AdminPostsController');
     Route::resource('admin/categories', 'AdminCategoriesController');
+    Route::delete('admin/delete/media', 'AdminMediaController@deleteMedia')->name('del');
     Route::resource('admin/media', 'AdminMediaController');
     // Route::get('admin/media/upload', 'AdminMediaController@store')->name('media.upload');
     Route::resource('admin/comments', 'PostCommentController');
@@ -41,3 +39,7 @@ Route::group(['middleware'=> 'admin'], function(){
 });
 
 
+Route::group(['middleware'=> 'auth'], function(){
+
+    Route::post('comment/reply', 'CommentRepliesController@createReply')->name('replies.createReply');
+});

@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Post;
 use App\User;
 use App\Photo;
+use App\Comment;
 use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\PostsCreateRequest;
 
@@ -20,7 +22,7 @@ class AdminPostsController extends Controller
     public function index()
     {
         //
-        $posts = Post::all();
+        $posts = Post::paginate(8);
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -102,12 +104,12 @@ class AdminPostsController extends Controller
         // return [$request->all(), $post];
 
         $input = $request->all();
-        // $post = Post::findOrFail($id);
-        // $user = User::findOrFail($post->user_id);
+        $post = Post::findOrFail($id);
+        $user = User::findOrFail($post->user_id);
         // if (!$user->isAdmin()) {
         //     $user = User::auth();
         // }
-        $user = Auth::user();// get the logged in user
+        // $user = Auth::user();// get the logged in user
         //عند ترفيع الصورة يتم تفعيل هذا الشرط
         if($file = $request->file('photo_id')){
             $name = time(). $file->getClientOriginalName();
@@ -136,11 +138,5 @@ class AdminPostsController extends Controller
        return redirect(route('posts.index'));
     }
 
-    public function post($id)
-    {
-        $post = Post::findOrFail($id);
-        $comments = $post->comments;
-        return view('post', compact('post', 'comments'));
-        
-    }
+  
 }

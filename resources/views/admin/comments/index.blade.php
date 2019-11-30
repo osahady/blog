@@ -1,7 +1,9 @@
 @extends('layouts.admin')
 
 @section('content')
-    
+    @if (Session::has('dmc'))
+        <div class="alert alert-danger">{{ session('dmc') }}</div>
+    @endif
 
     @if (count($comments)>0)
     <h1>Comments</h1>
@@ -13,7 +15,7 @@
             <th scope="col">Email</th>
             <th scope="col">Comment</th>
             <th>Link</th>
-            <th>Action</th>
+            <th>Replies</th>
           </tr>
         </thead>
         <tbody>
@@ -24,6 +26,8 @@
                     <td>{{ $comment->email }}</td>
                     <td>{{ $comment->body }}</td>
                     <td><a class="btn btn-outline-info" href="{{ route('home.post', $comment->post->id) }}">{{ $comment->post->title }}</a></td>
+                    <td><a class="btn btn-outline-info" href="{{ route('replies.show', $comment->id) }}">View Replies</a></td>
+
                     <td>
                         @if ($comment->is_active == 1)
                             <form method="POST" action="{{ route('comments.update', $comment->id) }}">

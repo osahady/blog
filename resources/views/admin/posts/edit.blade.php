@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 
 @section('content')
+
+    @include('includes.tinyeditor')
     <h1>Edit Post</h1>
    <div class="row">
        <div class="col-sm-4">
@@ -29,12 +31,13 @@
                     </select>
                 </div>
         
-                <div class="form-group">
-                    <label for="photo_id">Photo</label>
-                    <input type="file" name="photo_id" >
+                <div class="custom-file">
+                    
+                    <input class="custom-file-input" type="file" name="photo_id" >
+                    <label class="custom-file-label" for="photo_id">Photo</label>
                 </div>
         
-                <div class="form-group">
+                <div class="form-group my-5">
                     <label for="body">Body</label>            
                     <textarea name="body" rows="3" class="form-control">{{ $post->body }}</textarea>
                 </div>

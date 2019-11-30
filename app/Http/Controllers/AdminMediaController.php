@@ -29,6 +29,8 @@ class AdminMediaController extends Controller
         
     }
 
+    
+
     public function destroy($id)
     {   
         $photo = Photo::findOrFail($id);
@@ -36,6 +38,34 @@ class AdminMediaController extends Controller
         // public_path() <==> /var/www/html/blog/public
         unlink(public_path(). $photo->file);
         $photo->delete();//delete the image from the database table
-        return redirect(route('media.index'));
+        // return redirect(route('media.index'));
+    }
+
+    public function deleteMedia(Request $request)
+    {
+       
+        // if(isset($request->delete_single)){
+            
+        //     $photoID =  key($request->delete_single);            
+        //     $this->destroy($photoID);
+        //     return redirect()->back();
+        // }
+
+        if(isset($request->delete_all) && !empty($request->checkBoxArrayForeach)){
+
+            $photos = Photo::findOrFail($request->checkBoxArrayForeach);
+
+            foreach($photos as $photo){
+                $photo->delete();
+            }
+
+            return redirect()->back();
+
+
+        }else{
+            return redirect()->back();
+        }
+
+        
     }
 }

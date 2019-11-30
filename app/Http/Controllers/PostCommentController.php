@@ -49,7 +49,7 @@ class PostCommentController extends Controller
             'email'     =>  $user->email,
             
             'body'      =>  $request->body,
-            'photo'     =>  $user->photo->file,
+            'photo'     =>  $user->photo ? $user->photo->file : '',
         ];
         Comment::create($data);
         //تعرض لمرة واحدة
@@ -108,6 +108,6 @@ class PostCommentController extends Controller
     {
         //
         Comment::findOrFail($id)->delete();
-        return redirect()->back();
+        return redirect()->back()->with('dmc', 'The comment has been deleted');
     }
 }

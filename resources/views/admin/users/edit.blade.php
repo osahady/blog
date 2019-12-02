@@ -63,17 +63,21 @@
                     <label for="password">Password:</label>
                     <input type="password" class="form-control" name="password">
                 </div>
-        
-                <button type="submit" class="btn btn-primary">Update!</button>
+        <div class="form-row">
+            <div class="col">
+                    <button type="submit" class="btn btn-primary form-control">Update!</button>
+            </div>
+                
             </form>
         
-            <form action="{{ route('users.destroy', $user->id) }}" method="post">
+            <form action="{{ route('users.destroy', $user->id) }}" method="post" class="col">
                 @csrf
                 @method('DELETE')
-                <div class="form-group">
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                <div class="form-group ">
+                    <button type="submit" class="btn btn-danger form-control">Delete</button>
                 </div>
             </form>
+        </div>
 
             
         </div>
